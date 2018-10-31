@@ -30,7 +30,7 @@ if (args[0] === 'commit') {
 		return util.exec('git add .').then(() => {
 			return util.exec('git commit -m "fast save"');
 		}).then(() => {
-			return util.exec('git push origin ' + banch);
+			return util.exec('git push origin ' + branch);
 		});
 	})
 }
