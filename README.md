@@ -9,6 +9,11 @@ own version for ubuntu
 curl -sL https://raw.githubusercontent.com/anzerr/deploy/master/docker.sh | sudo -E bash -
 ```
 
+### `Bootstrap project`
+```shell
+curl -sL https://raw.githubusercontent.com/anzerr/deploy/master/project.sh | bash -
+```
+
 ### `Install scripts for kube`
 ```shell
 curl -sL https://raw.githubusercontent.com/anzerr/deploy/master/kube.sh | sudo -E bash -
