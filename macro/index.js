@@ -22,15 +22,14 @@ class Util {
 
 const [,, ...args] = process.argv, cwd = process.cwd(), util = new Util();
 
-console.log('cat', args, process.cwd());
 if (args[0] === 'commit') {
 	console.log('here');
 	util.exec('git branch', {cwd: cwd}).then((res) => {
 		let branch = res.toString().match(/\*\s(.*)/)[1];
-		return util.exec('git add .').then(() => {
-			return util.exec('git commit -m "fast save"');
+		return util.exec('git add .', {cwd: cwd}).then(() => {
+			return util.exec('git commit -m "fast save"', {cwd: cwd});
 		}).then(() => {
-			return util.exec('git push origin ' + branch);
+			return util.exec('git push origin ' + branch, {cwd: cwd});
 		});
 	})
 }
