@@ -1,9 +1,12 @@
 #!/usr/bin/env node
 
-const {spawn} = require('child_process');
+const {spawn} = require('child_process'),
+	path = require('path');
 
 class Util {
+
 	constructor() {}
+
 	exec(c, o) {
 		return new Promise((resolve) => {
 			const cmd = spawn('sh', ['-c', c], o);
@@ -18,18 +21,22 @@ class Util {
 			});
 		});
 	}
+
 };
 
 const [,, ...args] = process.argv, cwd = process.cwd(), util = new Util();
 
 if (args[0] === 'commit') {
-	console.log('here');
-	util.exec('git branch', {cwd: cwd}).then((res) => {
+	return util.exec('git branch', {cwd: cwd}).then((res) => {
 		let branch = res.toString().match(/\*\s(.*)/)[1];
 		return util.exec('git add .', {cwd: cwd}).then(() => {
 			return util.exec('git commit -m "fast save"', {cwd: cwd});
 		}).then(() => {
 			return util.exec('git push origin ' + branch, {cwd: cwd});
 		});
-	})
+	});
+}
+
+if (args[0] === 'bootstrap') {
+	return util.exec(path.join(__dirname, './../project.sh').replace(/\\/g, '\\\\'));
 }
