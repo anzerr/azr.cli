@@ -1,7 +1,9 @@
 #!/usr/bin/env node
 
 const {spawn} = require('child_process'),
-	path = require('path');
+	path = require('path'),
+	fs = require('fs'),
+	u = require('util');
 
 class Util {
 
@@ -25,6 +27,14 @@ class Util {
 		});
 	}
 
+	copy(a, b) {
+		return u.promisify(fs.copyFile)(a, b);
+	}
+
+	ls(a) {
+		return u.promisify(fs.readdir)(a);
+	}
+
 };
 
 const [,, ...args] = process.argv, cwd = process.cwd(), util = new Util();
@@ -44,3 +54,52 @@ if (args[0] === 'commit') {
 if (args[0] === 'bootstrap') {
 	return util.exec(path.join(__dirname, './../project.sh').replace(/\\/g, '\\\\'));
 }
+
+if (args[0] === 'atom') {
+	let key = Math.random().toString(36).substring(2), workdir = path.join(cwd, key);
+	if (args[1] === 'backup') {
+		return util.exec('git clone git@github.com:anzerr/atom.config.git ' + key, {cwd: cwd}).then(async (res) => {
+			let dir = (await util.exec('cd ~/.atom && pwd'))
+				.toString()
+				.trim()
+				.replace(/^\/([a-z]){1}\/(.*)$/, "$1:/$2");
+			let files = await util.ls(dir), wait = [];
+			for (let i in files) {
+				if (files[i].match(/^(.+?)\.(json|cson|coffee|less)$/)) {
+					wait.push(util.copy(path.join(dir, files[i]), path.join(key, files[i])));
+				}
+			}
+			wait.push(util.exec('apm list --installed --bare > packages.list', {cwd: workdir}));
+			return Promise.all(wait);
+		}).then(() => {
+			return util.exec('azr commit', {cwd: workdir});
+		}).then(() => {
+			return util.exec('rm -Rf ' + key, {cwd: cwd});
+		}).then(() => {
+			console.log('atom backup done');
+		}).catch(console.log);
+	}
+	if (args[1] === 'restore') {
+		return util.exec('git clone git@github.com:anzerr/atom.config.git ' + key, {cwd: cwd}).then(async () => {
+			let dir = (await util.exec('cd ~/.atom && pwd'))
+				.toString()
+				.trim()
+				.replace(/^\/([a-z]){1}\/(.*)$/, "$1:/$2");
+			let files = await util.ls(dir), wait = [];
+			for (let i in files) {
+				if (files[i].match(/^(.+?)\.(json|cson|coffee|less)$/)) {
+					wait.push(util.copy(path.join(key, files[i]), path.join(dir, files[i])));
+				}
+			}
+			return Promise.all(wait);
+		}).then(() => {
+			return util.exec('apm install --packages-file packages.list', {cwd: workdir});
+		}).then(() => {
+			return util.exec('rm -Rf ' + key, {cwd: cwd});
+		}).then(() => {
+			console.log('restored atom');
+		}).catch(console.log);
+	}
+}
+
+console.log('not valid');
