@@ -52,10 +52,10 @@ if (arg.is('atom')) {
 				.trim()
 				.replace(/^\/([a-z]){1}\/(.*)$/, "$1:/$2");
 
-			let files = await util.ls(dir), wait = [];
+			let files = await fs.readdir(dir), wait = [];
 			for (let i in files) {
 				if (files[i].match(/^(.+?)\.(json|cson|coffee|less)$/)) {
-					wait.push(util.copy(path.join(dir, files[i]), path.join(key, files[i])));
+					wait.push(fs.copyFile(path.join(dir, files[i]), path.join(key, files[i])));
 				}
 			}
 			wait.push(util.exec('apm list --installed --bare > packages.list', {cwd: workdir}));
@@ -76,10 +76,10 @@ if (arg.is('atom')) {
 				.trim()
 				.replace(/^\/([a-z]){1}\/(.*)$/, "$1:/$2");
 
-			let files = await util.ls(dir),wait = [];
+			let files = await fs.readdir(dir),wait = [];
 			for (let i in files) {
 				if (files[i].match(/^(.+?)\.(json|cson|coffee|less)$/)) {
-					wait.push(util.copy(path.join(key, files[i]), path.join(dir, files[i])));
+					wait.push(fs.copyFile(path.join(key, files[i]), path.join(dir, files[i])));
 				}
 			}
 			return Promise.all(wait);
