@@ -9,6 +9,17 @@
 	"keywords": [],
 	"author": "",
 	"license": "ISC",
+	"dependencies": {
+		"fs.promisify": "git+ssh://git@github.com:anzerr/fs.promisify.git",
+		"cli.util": "git+ssh://git@github.com:anzerr/cli.util.git"
+	},
+	"devDependencies": {
+		"eslint": "^5.10.0",
+		"eslint-config-basic": "git+ssh://git@github.com/anzerr/eslintrc.git"
+	},
+	"eslintConfig": {
+		"extends": "eslint-config-basic"
+	},
 	"bin": {
 		"azr": "./index.js"
 	}
