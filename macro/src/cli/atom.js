@@ -1,17 +1,18 @@
 
 const util = require('../util.js'),
-	fs = require('fs.promisify');
+	fs = require('fs.promisify'),
+	path = require('path');
 
 module.exports = (arg, cwd) => {
 	if (arg.is('atom')) {
 		let key = Math.random().toString(36).substring(2), workdir = path.join(cwd, key);
 
 		if (arg.is('backup')) {
-			return util.exec('git clone git@github.com:anzerr/atom.config.git ' + key, {cwd: cwd}).then(async (res) => {
+			return util.exec('git clone git@github.com:anzerr/atom.config.git ' + key, {cwd: cwd}).then(async () => {
 				let dir = (await util.exec('cd ~/.atom && pwd'))
 					.toString()
 					.trim()
-					.replace(/^\/([a-z]){1}\/(.*)$/, "$1:/$2");
+					.replace(/^\/([a-z]){1}\/(.*)$/, '$1:/$2');
 
 				let files = await fs.readdir(dir), wait = [];
 				for (let i in files) {
@@ -35,9 +36,9 @@ module.exports = (arg, cwd) => {
 				let dir = (await util.exec('cd ~/.atom && pwd'))
 					.toString()
 					.trim()
-					.replace(/^\/([a-z]){1}\/(.*)$/, "$1:/$2");
+					.replace(/^\/([a-z]){1}\/(.*)$/, '$1:/$2');
 
-				let files = await fs.readdir(dir),wait = [];
+				let files = await fs.readdir(dir), wait = [];
 				for (let i in files) {
 					if (files[i].match(/^(.+?)\.(json|cson|coffee|less)$/)) {
 						wait.push(fs.copyFile(path.join(key, files[i]), path.join(dir, files[i])));
@@ -53,4 +54,6 @@ module.exports = (arg, cwd) => {
 			}).catch(console.log);
 		}
 	}
-}
+
+	return false;
+};
