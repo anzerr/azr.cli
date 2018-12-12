@@ -26,7 +26,17 @@ module.exports = (arg, cwd, cli) => {
 				const user = cli.get('user') || 'anzerr',
 					registry = cli.get('registry') || 'none',
 					base = user + '/' + res.name + ':' + res.version;
+				console.log(base + ' ' + registry + '/' + base);
 				return util.exec('docker tag ' + base + ' ' + registry + '/' + base);
+			}).catch(console.log);
+		}
+		if (arg.is('push')) {
+			return get(cwd).then((res) => {
+				const user = cli.get('user') || 'anzerr',
+					registry = cli.get('registry') || 'none',
+					base = user + '/' + res.name + ':' + res.version;
+				console.log('push ' + registry + '/' + base);
+				return util.exec('docker push ' + registry + '/' + base);
 			}).catch(console.log);
 		}
 	}
