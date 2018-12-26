@@ -3,9 +3,14 @@ const util = require('../util.js'),
 	fs = require('fs.promisify'),
 	path = require('path');
 
-let nextVersion = (cwd) => {
+let getPackage = (cwd) => {
 	return fs.readFile(path.join(cwd, 'package.json')).then((res) => {
-		let json = JSON.parse(res.toString());
+		return JSON.parse(res.toString());
+	});
+};
+
+let nextVersion = (cwd) => {
+	return getPackage(cwd).then((json) => {
 		let version = json.version.split('.');
 		version[version.length - 1] = Number(version[version.length - 1]) + 1;
 		json.version = version.join('.');
@@ -17,6 +22,32 @@ module.exports = (arg, cwd, cli) => {
 	if (arg.is('npm')) {
 		if (arg.is('version')) {
 			return nextVersion(cwd).then((res) => {
+				return fs.writeFile(path.join(cwd, 'package.json'), JSON.stringify(res, null, '\t'));
+			}).catch(console.log);
+		}
+		if (arg.is('update')) {
+			return getPackage(cwd).then(async (res) => {
+				let repo = (await util.exec('git remote get-url origin')).toString().slice(0, -1);
+				repo = {
+					ssl: repo,
+					https: ('https://github.com/' + repo.split(':')[1]).replace(/\.git$/, '')
+				};
+				res.repository = {
+					type: 'git',
+					url: 'git+' + repo.https + '.git'
+				};
+				res.engines = {
+					node: '>= 0.10.0'
+				};
+				res.types = res.main.replace(/\.js$/, '.d.ts');
+				res.author = 'anzerr';
+				res.license = 'ISC';
+				res.bugs = {
+					url: repo.https + '/issues'
+				};
+				res.homepage = repo.https + '#readme';
+				console.log(res);
+
 				return fs.writeFile(path.join(cwd, 'package.json'), JSON.stringify(res, null, '\t'));
 			}).catch(console.log);
 		}
