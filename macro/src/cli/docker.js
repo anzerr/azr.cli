@@ -1,8 +1,7 @@
 
 const util = require('../util.js'),
 	fs = require('fs.promisify'),
-	path = require('path'),
-	YAML = require('json.to.yaml');
+	path = require('path');
 
 const get = (cwd) => {
 	return fs.readFile(path.join(cwd, 'package.json')).then((res) => {
@@ -15,9 +14,7 @@ const get = (cwd) => {
 module.exports = (arg, cwd, cli) => {
 	if (arg.is('docker')) {
 		if (arg.is('compose')) {
-			return fs.readFile(path.join(cwd, 'docker-compose.json')).then((res) => {
-				return fs.writeFile(path.join(cwd, 'docker-compose.yaml'), YAML.stringify(JSON.parse(res.toString())));
-			}).then(() => {
+			return util.exec('azr yaml docker-compose.json', {cwd: cwd}).then(() => {
 				return util.exec('docker-compose up', {cwd: cwd});
 			}).catch(console.log);
 		}

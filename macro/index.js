@@ -4,7 +4,7 @@ const Cli = require('cli.util');
 
 let cli = new Cli(process.argv, {}), cwd = process.cwd();
 
-let cmd = ['atom', 'bootstrap', 'git', 'npm', 'docker'];
+let cmd = ['atom', 'bootstrap', 'git', 'docker', 'git', 'license', 'npm', 'slowloris', 'static', 'sync', 'yaml'];
 for (let i in cmd) {
 	let a = require('./src/cli/' + cmd[i] + '.js');
 	if (a(cli.argument(), cwd, cli)) {

@@ -41,14 +41,14 @@ module.exports = (arg, cwd, cli) => {
 				};
 				res.types = res.main.replace(/\.js$/, '.d.ts');
 				res.author = 'anzerr';
-				res.license = 'ISC';
+				res.license = 'MIT';
 				res.bugs = {
 					url: repo.https + '/issues'
 				};
 				res.homepage = repo.https + '#readme';
 				console.log(res);
-
-				return fs.writeFile(path.join(cwd, 'package.json'), JSON.stringify(res, null, '\t'));
+				await util.exec('azr license --type MIT', {cwd: cwd});
+				await fs.writeFile(path.join(cwd, 'package.json'), JSON.stringify(res, null, '\t'));
 			}).catch(console.log);
 		}
 		if (arg.is('push')) {
