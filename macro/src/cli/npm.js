@@ -32,6 +32,9 @@ module.exports = (arg, cwd, cli) => {
 					ssl: repo,
 					https: ('https://github.com/' + repo.split(':')[1]).replace(/\.git$/, '')
 				};
+				if (res.devDependencies && res.devDependencies.eslint) {
+					res.devDependencies.eslint = '5.11.1';
+				}
 				res.repository = {
 					type: 'git',
 					url: 'git+' + repo.https + '.git'
