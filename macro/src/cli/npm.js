@@ -63,7 +63,7 @@ module.exports = (arg, cwd, cli) => {
 				].join(' && '));
 			}).catch(console.log);
 		}
-		return util.exec('rm -Rf node_modules package-lock.json && npm i');
+		return util.exec('rm -Rf node_modules package-lock.json && npm i' + (cli.has('dev') ? ' --only=dev' : ''));
 	}
 	return false;
 };
