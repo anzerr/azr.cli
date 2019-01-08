@@ -13,7 +13,7 @@
 		"cli.util": "git+ssh://git@github.com:anzerr/cli.util.git",
 		"fs.promisify": "git+ssh://git@github.com:anzerr/fs.promisify.git",
 		"json.to.yaml": "git+ssh://git@github.com/anzerr/json.to.yaml.git",
-		"slowloris": "git+ssh://git@github.com/anzerr/slowloris.tool.git",
+		"slowloris.tool": "git+ssh://git@github.com/anzerr/slowloris.tool.git",
 		"static.http": "git+ssh://git@github.com/anzerr/static.http.git",
 		"sync.folder": "git+ssh://git@github.com/anzerr/sync.folder.git"
 	},

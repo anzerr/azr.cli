@@ -1,8 +1,20 @@
 #!/usr/bin/env node
 
-const Cli = require('cli.util');
+const {Cli, Map} = require('cli.util');
 
-let cli = new Cli(process.argv, {}), cwd = process.cwd();
+let cli = new Cli(process.argv, [
+		new Map('cwd').alias(['c', 'C']).arg(),
+		new Map('dns').alias(['n', 'N']).arg(),
+		new Map('user').alias(['u', 'U']).arg(),
+		new Map('registry').alias(['r', 'R']).arg(),
+		new Map('type').alias(['t', 'T']).arg(),
+		new Map('max').alias(['m', 'M']).arg(),
+		new Map('host').alias(['h', 'H']).arg(),
+		new Map('port').alias(['p', 'P']).arg(),
+		new Map('dev').alias(['d', 'D'])
+	], 1000), cwd = process.cwd();
+
+console.log(cli, cli.argument());
 
 let cmd = ['atom', 'bootstrap', 'git', 'docker', 'git', 'license', 'npm', 'slowloris', 'static', 'sync', 'yaml'];
 for (let i in cmd) {
@@ -12,8 +24,9 @@ for (let i in cmd) {
 	}
 }
 
+
 let bootstraps = ['node'];
-console.log([
+console.log([ // update this
 	'command:',
 	'\tcommit',
 	'\t  commit changes to with git\n',
