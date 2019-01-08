@@ -12,9 +12,7 @@ let cli = new Cli(process.argv, [
 		new Map('host').alias(['h', 'H']).arg(),
 		new Map('port').alias(['p', 'P']).arg(),
 		new Map('dev').alias(['d', 'D'])
-	], 1000), cwd = process.cwd();
-
-console.log(cli, cli.argument());
+	]), cwd = process.cwd();
 
 let cmd = ['atom', 'bootstrap', 'git', 'docker', 'git', 'license', 'npm', 'slowloris', 'static', 'sync', 'yaml'];
 for (let i in cmd) {
@@ -23,7 +21,6 @@ for (let i in cmd) {
 		return;
 	}
 }
-
 
 let bootstraps = ['node'];
 console.log([ // update this
