@@ -17,7 +17,10 @@ module.exports = (arg, cwd) => {
 	}
 
 	if (arg.is('clone')) {
-		let name = arg.get() || 'none', file = arg.get() || '';
+		let name = arg.get() || 'none', file = arg.next().get() || '';
+		if (!name.match(/^(ssh:\/\/){0,1}git@/)) {
+			console.log('WARNING CLONING A REPO WITHOUT SSH');
+		}
 		return util.exec(`git clone --recurse --progress --verbose ${name} ${file}`.trim(), {cwd: cwd}).catch(console.log);
 	}
 
