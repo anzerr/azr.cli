@@ -11,6 +11,8 @@ module.exports = (arg, cwd) => {
 				let name = arg.get() || 'dump';
 				return util.exec(`git commit -m "${name}"`, {cwd: cwd});
 			}).then(() => {
+				return util.exec(`git pull origin ${branch}`, {cwd: cwd});
+			}).then(() => {
 				return util.exec(`git push origin ${branch}`, {cwd: cwd});
 			});
 		}).catch(console.log);
