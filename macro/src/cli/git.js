@@ -9,10 +9,24 @@ module.exports = (arg, cwd) => {
 
 			return util.exec('git add .', {cwd: cwd}).then(() => {
 				let name = arg.get() || 'dump';
-				return util.exec('git commit -m "' + name + '"', {cwd: cwd});
+				return util.exec(`git commit -m "${name}"`, {cwd: cwd});
 			}).then(() => {
-				return util.exec('git push origin ' + branch, {cwd: cwd});
+				return util.exec(`git push origin ${branch}`, {cwd: cwd});
 			});
+		}).catch(console.log);
+	}
+
+	if (arg.is('clone')) {
+		let name = arg.get() || 'none', file = arg.get() || '';
+		return util.exec(`git clone --recurse --progress --verbose ${name} ${file}`.trim(), {cwd: cwd}).catch(console.log);
+	}
+
+	if (arg.is('pull')) {
+		return util.exec('git branch', {cwd: cwd}).then((res) => {
+			let branch = res.toString().match(/\*\s(.*)/);
+			branch = (branch) ? branch[1] : 'master';
+
+			return util.exec(`git pull origin ${branch}`, {cwd: cwd});
 		}).catch(console.log);
 	}
 
