@@ -1,5 +1,25 @@
 ### `Install scripts for docker`
 
+force git to use https
+```shell
+git config --global url."https://".insteadOf git+ssh:// &&
+git config --global url."https://".insteadOf git:// &&
+git config --global url."https://".insteadOf ssh:// &&
+git config --global url."https://github.com/".insteadOf git@github.com
+```
+
+
+Nodejs
+```shell
+# Using Ubuntu
+curl -sL https://deb.nodesource.com/setup_11.x | sudo -E bash -
+sudo apt-get install -y nodejs
+
+# Using Debian, as root
+curl -sL https://deb.nodesource.com/setup_11.x | bash -
+apt-get install -y nodejs
+```
+
 offical script
 ```shell
 curl -fsSL get.docker.com -o get-docker.sh
