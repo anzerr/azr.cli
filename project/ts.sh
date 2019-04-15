@@ -8,8 +8,8 @@ npm init -f && \
 	npm i -D tslint && \
 	npm i -D tslint-config-airbnb && \
 	npm i -D ts-node && \
-	npm i --save reflect-metadata && \
-	npm i --save typescript && \
+	npm i -D typescript && \
+	npm i -P reflect-metadata && \
 	echo '' > index.ts && \
 	node -e "let a = require('./package.json'); \
 		a.scripts = { \
