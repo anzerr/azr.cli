@@ -11,9 +11,12 @@
 			"es6",
 			"es2017",
 			"dom"
-		]
+		],
+		"outDir": "./dist",
+	    "baseUrl": "./"
 	},
 	"include": [
-		"./src/*"
+		"./src/*",
+		"./index.ts"
 	]
 }

@@ -3,7 +3,7 @@ const util = require('../util.js'),
 	path = require('path');
 
 module.exports = (arg, cwd) => {
-	let bootstraps = ['node'];
+	let bootstraps = ['node', 'ts'];
 	if (arg.is('bootstrap') || arg.is('bs')) {
 		for (let i in bootstraps) {
 			if (arg.get() === bootstraps[i]) {

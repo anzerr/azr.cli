@@ -11,5 +11,12 @@ npm init -f && \
 	npm i --save reflect-metadata && \
 	npm i --save typescript && \
 	echo '' > index.ts && \
-	node -e "let a = require('./package.json'); a.eslintConfig = {extends: 'eslint-config-basic'}; require('fs').writeFileSync('./package.json', JSON.stringify(a, null, '\t'));" &&
+	node -e "let a = require('./package.json'); \
+		a.scripts = { \
+			build: 'tsc -p ./', \
+			clean: 'find ./src -regex \".*\\.\\(js\\|map\\|d\\.ts\\)\" -type f -delete && rm -Rf ./dist' \
+		}; \
+		a.main = 'dist/index.js'; \
+		a.eslintConfig = {extends: 'eslint-config-basic'}; \
+		require('fs').writeFileSync('./package.json', JSON.stringify(a, null, '\t'));" &&
 	git init
