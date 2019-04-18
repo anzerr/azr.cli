@@ -37,7 +37,7 @@ module.exports = (arg, cwd, cli) => {
 				}
 				res.repository = {
 					type: 'git',
-					url: 'git+' + repo.https + '.git'
+					url: repo.ssl
 				};
 				res.engines = {
 					node: '>= 0.10.0'
