@@ -14,7 +14,7 @@ let cli = new Cli(process.argv, [
 		new Map('dev').alias(['d', 'D'])
 	]), cwd = process.cwd();
 
-let cmd = ['atom', 'bootstrap', 'git', 'docker', 'git', 'license', 'npm', 'slowloris', 'static', 'sync', 'yaml'];
+let cmd = ['atom', 'bootstrap', 'git', 'docker', 'git', 'license', 'npm', 'slowloris', 'static', 'sync', 'yaml', 'key'];
 for (let i in cmd) {
 	let a = require('./src/cli/' + cmd[i] + '.js');
 	if (a(cli.argument(), cwd, cli)) {

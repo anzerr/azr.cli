@@ -15,7 +15,8 @@
 		"json.to.yaml": "git+ssh://git@github.com/anzerr/json.to.yaml.git",
 		"slowloris.tool": "git+ssh://git@github.com/anzerr/slowloris.tool.git",
 		"static.http": "git+ssh://git@github.com/anzerr/static.http.git",
-		"sync.folder": "git+ssh://git@github.com/anzerr/sync.folder.git"
+		"sync.folder": "git+ssh://git@github.com/anzerr/sync.folder.git",
+		"unique.util": "git+https://git@github.com/anzerr/uKey.library.git"
 	},
 	"devDependencies": {
 		"eslint": "^5.10.0",
