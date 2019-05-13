@@ -11,7 +11,8 @@ let cli = new Cli(process.argv, [
 		new Map('max').alias(['m', 'M']).arg(),
 		new Map('host').alias(['h', 'H']).arg(),
 		new Map('port').alias(['p', 'P']).arg(),
-		new Map('dev').alias(['d', 'D'])
+		new Map('dev').alias(['d', 'D']),
+		new Map('version').alias(['v', 'V'])
 	]), cwd = process.cwd();
 
 let cmd = ['atom', 'bootstrap', 'git', 'docker', 'git', 'license', 'npm', 'slowloris', 'static', 'sync', 'yaml', 'key'];
