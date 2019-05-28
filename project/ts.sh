@@ -3,7 +3,7 @@ npm init -f && \
 	curl -o .gitignore https://raw.githubusercontent.com/anzerr/azr.cli/master/template/.gitignore && \
 	curl -o tsconfig.json https://raw.githubusercontent.com/anzerr/azr.cli/master/template/tsconfig.json && \
 	curl -o tslint.json https://raw.githubusercontent.com/anzerr/azr.cli/master/template/tslint.json && \
-	npm i -D git+http://git@github.com/anzerr/eslintrc.git && \
+	npm i -D git+https://git@github.com/anzerr/eslintrc.git && \
 	npm i -D eslint && \
 	npm i -D tslint && \
 	npm i -D tslint-config-airbnb && \
