@@ -43,6 +43,8 @@ module.exports = (arg, cwd, cli) => {
 			}).then(() => {
 				return util.exec(`git pull origin ${branch}`, {cwd: cwd});
 			}).then(() => {
+				return util.exec(`git push origin ${branch}`, {cwd: cwd});
+			}).then(() => {
 				return util.exec('git push origin --tags');
 			});
 		}).catch(console.log);
