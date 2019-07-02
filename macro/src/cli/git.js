@@ -3,6 +3,16 @@ const util = require('../util.js'),
 	fs = require('fs.promisify'),
 	path = require('path');
 
+const type = {
+	info: '🔧',
+	feature: '✨',
+	bug: '🐛',
+	doc: '📚',
+	perf: '🐎',
+	test: '🚨',
+	wip: '🚧'
+};
+
 module.exports = (arg, cwd, cli) => {
 	if (arg.is('commit')) {
 		return util.exec('git branch', {cwd: cwd}).then((res) => {
@@ -20,8 +30,9 @@ module.exports = (arg, cwd, cli) => {
 			}).catch(() => {}).then(() => {
 				return util.exec('git add .', {cwd: cwd});
 			}).then(() => {
-				let name = arg.get() || 'dump';
-				return util.exec(`git commit -m "${name}"`, {cwd: cwd});
+				let name = arg.get() || 'dump',
+					t = (cli.has('type') ? type[cli.get('type')] : '') || type.wip;
+				return util.exec(`git commit -m "${t} ${name}"`, {cwd: cwd});
 			}).then(() => {
 				if (!cli.has('version')) {
 					return util.exec('npm version patch', {cwd: cwd});
@@ -30,7 +41,7 @@ module.exports = (arg, cwd, cli) => {
 			}).then(() => {
 				return util.exec(`git pull origin ${branch}`, {cwd: cwd});
 			}).then(() => {
-				return util.exec(`git push origin ${branch}`, {cwd: cwd});
+				return util.exec('git push origin --tags');
 			});
 		}).catch(console.log);
 	}
