@@ -29,6 +29,13 @@ own version for ubuntu
 curl -sL https://raw.githubusercontent.com/anzerr/deploy/master/docker.sh | sudo -E bash -
 ```
 
+### `use git token on npm`
+```shell
+GITHUB_AUTH_TOKEN='cat' && \
+git config --global --add url."https://$GITHUB_AUTH_TOKEN:x-oauth-basic@github.com".insteadOf https://git@github.com && \
+git config --global --add url."https://$GITHUB_AUTH_TOKEN:x-oauth-basic@github.com".insteadOf ssh://git@github.com
+```
+
 ### `Bootstrap project`
 ```shell
 curl -sL https://raw.githubusercontent.com/anzerr/deploy/master/project.sh | bash -
