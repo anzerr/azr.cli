@@ -2,7 +2,7 @@
 	"name": "azr.cli",
 	"version": "1.0.2",
 	"description": "",
-	"main": "index.js",
+	"main": "macro/index.js",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
@@ -26,7 +26,7 @@
 		"extends": "eslint-config-basic"
 	},
 	"bin": {
-		"azr": "./index.js"
+		"azr": "./macro/index.js"
 	},
 	"repository": {
 		"type": "git",
