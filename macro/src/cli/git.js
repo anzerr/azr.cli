@@ -19,7 +19,7 @@ module.exports = (arg, cwd, cli) => {
 			let branch = res.toString().match(/\*\s(.*)/);
 			branch = (branch) ? branch[1] : 'master';
 
-			let package = false;
+			let package = false, changes = [], updated = {};
 			return fs.readFile(path.join(cwd, 'package.json')).then((json) => {
 				package = true;
 				let a = JSON.parse(json.toString());
@@ -30,13 +30,25 @@ module.exports = (arg, cwd, cli) => {
 					return util.exec('npm run build', {cwd: cwd});
 				}
 			}).catch(() => {}).then(() => {
+				return util.exec('git diff --name-only HEAD', {cwd: cwd});
+			}).then((r) => {
+				changes = r.toString().split('\n');
+				for (let i in changes) {
+					if (changes[i].match(/^package(-lock)*\.json$/)) {
+						updated.dep = true;
+					}
+					if (changes[i].match(/\.(js|ts)$/)) {
+						updated.code = true;
+					}
+				}
+
 				return util.exec('git add .', {cwd: cwd});
 			}).then(() => {
-				let name = arg.get() || 'dump',
+				let name = arg.get() || (updated.dep && !updated.code ? 'update dependency' : 'dump'),
 					t = (cli.has('type') ? type[cli.get('type')] : '') || type.wip;
 				return util.exec(`git commit -m "${t} ${name}"`, {cwd: cwd});
 			}).then(() => {
-				if (!cli.has('version') && package) {
+				if (!cli.has('version') && package && (updated.code || updated.dep)) {
 					return util.exec('npm version patch', {cwd: cwd});
 				}
 				return Promise.resolve();
