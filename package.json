@@ -19,7 +19,7 @@
 		"unique.util": "git+https://git@github.com/anzerr/uKey.library.git"
 	},
 	"devDependencies": {
-		"eslint": "^5.10.0",
+		"eslint": "5.11.1",
 		"eslint-config-basic": "git+ssh://git@github.com/anzerr/eslintrc.git"
 	},
 	"eslintConfig": {
@@ -30,12 +30,12 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/anzerr/azr.cli.git"
+		"url": "git@github.com:anzerr/azr.cli.git"
 	},
 	"engines": {
 		"node": ">= 0.10.0"
 	},
-	"types": "index.d.ts",
+	"types": "macro/index.d.ts",
 	"bugs": {
 		"url": "https://github.com/anzerr/azr.cli/issues"
 	},
