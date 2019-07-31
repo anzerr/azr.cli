@@ -32,9 +32,10 @@ module.exports = (arg, cwd, cli) => {
 					ssl: repo,
 					https: ('https://github.com/' + repo.split(':')[1]).replace(/\.git$/, '')
 				};
-				if (res.devDependencies && res.devDependencies.eslint) {
+
+				/* if (res.devDependencies && res.devDependencies.eslint) {
 					res.devDependencies.eslint = '5.11.1';
-				}
+				}*/
 				res.repository = {
 					type: 'git',
 					url: repo.ssl
@@ -51,7 +52,7 @@ module.exports = (arg, cwd, cli) => {
 				res.homepage = repo.https + '#readme';
 				console.log(res);
 				await util.exec('azr license --type MIT', {cwd: cwd});
-				await fs.writeFile(path.join(cwd, 'package.json'), JSON.stringify(res, null, '\t'));
+				await fs.writeFile(path.join(cwd, 'package.json'), JSON.stringify(res, null, '\t') + '\n');
 			}).catch(console.log);
 		}
 		if (arg.is('push')) {
