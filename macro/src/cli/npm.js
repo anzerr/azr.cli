@@ -1,6 +1,7 @@
 
 const util = require('../util.js'),
 	fs = require('fs.promisify'),
+	color = require('console.color'),
 	path = require('path');
 
 let getPackage = (cwd) => {
@@ -23,7 +24,7 @@ module.exports = (arg, cwd, cli) => {
 		if (arg.is('version')) {
 			return nextVersion(cwd).then((res) => {
 				return fs.writeFile(path.join(cwd, 'package.json'), JSON.stringify(res, null, '\t'));
-			}).catch(console.log);
+			}).catch((err) => console.log(color.red(err)));
 		}
 		if (arg.is('update')) {
 			return getPackage(cwd).then(async (res) => {
@@ -43,7 +44,9 @@ module.exports = (arg, cwd, cli) => {
 				res.engines = {
 					node: '>= 0.10.0'
 				};
-				res.types = res.main.replace(/\.js$/, '.d.ts');
+				if (!res.types) {
+					res.types = res.main.replace(/\.js$/, '.d.ts');
+				}
 				res.author = 'anzerr';
 				res.license = 'MIT';
 				res.bugs = {
@@ -53,7 +56,7 @@ module.exports = (arg, cwd, cli) => {
 				console.log(res);
 				await util.exec('azr license --type MIT', {cwd: cwd});
 				await fs.writeFile(path.join(cwd, 'package.json'), JSON.stringify(res, null, '\t') + '\n');
-			}).catch(console.log);
+			}).catch((err) => console.log(color.red(err)));
 		}
 		if (arg.is('push')) {
 			return nextVersion(cwd).then((res) => {
@@ -62,7 +65,7 @@ module.exports = (arg, cwd, cli) => {
 					cli.has('clean') ? 'rm -Rf node_modules package-lock.json && npm i' : 'echo "skip new lock"',
 					'azr commit "update to version ' + res.version + '"'
 				].join(' && '));
-			}).catch(console.log);
+			}).catch((err) => console.log(color.red(err)));
 		}
 		return util.exec('rm -Rf node_modules package-lock.json && npm i' + (cli.has('dev') ? ' --only=dev' : ''));
 	}
