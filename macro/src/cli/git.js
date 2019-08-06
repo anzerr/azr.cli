@@ -1,6 +1,7 @@
 
 const util = require('../util.js'),
 	fs = require('fs.promisify'),
+	color = require('console.color'),
 	path = require('path');
 
 const type = {
@@ -59,7 +60,7 @@ module.exports = (arg, cwd, cli) => {
 			}).then(() => {
 				return util.exec('git push origin --tags');
 			});
-		}).catch(console.log);
+		}).catch((err) => console.log(color.red(err)));
 	}
 
 	if (arg.is('clone')) {
@@ -67,7 +68,7 @@ module.exports = (arg, cwd, cli) => {
 		if (!name.match(/^(ssh:\/\/){0,1}git@/)) {
 			console.log('WARNING CLONING A REPO WITHOUT SSH');
 		}
-		return util.exec(`git clone --recurse --progress --verbose ${name} ${file}`.trim(), {cwd: cwd}).catch(console.log);
+		return util.exec(`git clone --recurse --progress --verbose ${name} ${file}`.trim(), {cwd: cwd}).catch((err) => console.log(color.red(err)));
 	}
 
 	if (arg.is('pull')) {
@@ -76,7 +77,7 @@ module.exports = (arg, cwd, cli) => {
 			branch = (branch) ? branch[1] : 'master';
 
 			return util.exec(`git pull origin ${branch}`, {cwd: cwd});
-		}).catch(console.log);
+		}).catch((err) => console.log(color.red(err)));
 	}
 
 	return false;

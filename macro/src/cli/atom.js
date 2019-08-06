@@ -1,6 +1,7 @@
 
 const util = require('../util.js'),
 	fs = require('fs.promisify'),
+	color = require('console.color'),
 	path = require('path');
 
 module.exports = (arg, cwd) => {
@@ -28,7 +29,7 @@ module.exports = (arg, cwd) => {
 				return util.exec('rm -Rf ' + key, {cwd: cwd});
 			}).then(() => {
 				console.log('atom backup done');
-			}).catch(console.log);
+			}).catch((err) => console.log(color.red(err)));
 		}
 
 		if (arg.is('restore')) {
@@ -51,7 +52,7 @@ module.exports = (arg, cwd) => {
 				return util.exec('rm -Rf ' + key, {cwd: cwd});
 			}).then(() => {
 				console.log('restored atom');
-			}).catch(console.log);
+			}).catch((err) => console.log(color.red(err)));
 		}
 	}
 

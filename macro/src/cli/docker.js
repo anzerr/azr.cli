@@ -1,6 +1,7 @@
 
 const util = require('../util.js'),
 	fs = require('fs.promisify'),
+	color = require('console.color'),
 	path = require('path');
 
 const get = (cwd) => {
@@ -16,13 +17,13 @@ module.exports = (arg, cwd, cli) => {
 		if (arg.is('compose')) {
 			return util.exec('azr yaml docker-compose.json', {cwd: cwd}).then(() => {
 				return util.exec('docker-compose up', {cwd: cwd});
-			}).catch(console.log);
+			}).catch((err) => console.log(color.red(err)));
 		}
 		if (arg.is('dns')) {
 			let dns = cli.get('dns') || '8.8.8.8';
 			return util.exec('docker-machine ssh default "echo \\"search home\nnameserver ' + dns + '\\" | sudo tee /etc/resolv.conf > /dev/null"').then(() => {
 				return util.exec('docker-machine ssh default "cat /etc/resolv.conf"');
-			}).catch(console.log);
+			}).catch((err) => console.log(color.red(err)));
 		}
 		if (arg.is('build')) {
 			return get(cwd).then((res) => {
@@ -30,7 +31,7 @@ module.exports = (arg, cwd, cli) => {
 					base = user + '/' + res.name + ':' + res.version;
 				console.log(base);
 				return util.exec('docker build --no-cache -t ' + base + ' .');
-			}).catch(console.log);
+			}).catch((err) => console.log(color.red(err)));
 		}
 		if (arg.is('tag')) {
 			return get(cwd).then((res) => {
@@ -39,7 +40,7 @@ module.exports = (arg, cwd, cli) => {
 					base = user + '/' + res.name + ':' + res.version;
 				console.log(base + ' ' + registry + '/' + base);
 				return util.exec('docker tag ' + base + ' ' + registry + '/' + base);
-			}).catch(console.log);
+			}).catch((err) => console.log(color.red(err)));
 		}
 		if (arg.is('push')) {
 			return get(cwd).then((res) => {
@@ -48,13 +49,13 @@ module.exports = (arg, cwd, cli) => {
 					base = user + '/' + res.name + ':' + res.version;
 				console.log('push ' + registry + '/' + base);
 				return util.exec('docker push ' + registry + '/' + base);
-			}).catch(console.log);
+			}).catch((err) => console.log(color.red(err)));
 		}
 		return get(cwd).then((res) => {
 			const user = cli.get('user') || 'anzerr',
 				base = user + '/' + res.name + ':' + res.version;
 			console.log(base);
-		}).catch(console.log);
+		}).catch((err) => console.log(color.red(err)));
 	}
 	return false;
 };

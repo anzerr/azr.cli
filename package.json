@@ -11,6 +11,7 @@
 	"license": "MIT",
 	"dependencies": {
 		"cli.util": "git+ssh://git@github.com:anzerr/cli.util.git",
+		"console.color": "git+https://github.com/anzerr/console.color.git",
 		"fs.promisify": "git+ssh://git@github.com:anzerr/fs.promisify.git",
 		"json.to.yaml": "git+ssh://git@github.com/anzerr/json.to.yaml.git",
 		"slowloris.tool": "git+ssh://git@github.com/anzerr/slowloris.tool.git",
