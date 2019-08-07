@@ -1,6 +1,7 @@
 {
 	"name": "azr.cli",
 	"version": "1.0.5",
+	"private": true,
 	"description": "",
 	"main": "macro/index.js",
 	"scripts": {
