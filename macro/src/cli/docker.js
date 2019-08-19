@@ -33,6 +33,11 @@ module.exports = (arg, cwd, cli) => {
 				return util.exec('docker build --no-cache -t ' + base + ' .');
 			}).catch((err) => console.log(color.red(err)));
 		}
+		if (arg.is('machine')) {
+			return util.exec('docker-machine rm -f default && docker-machine create -d virtualbox --virtualbox-cpu-count "4" --virtualbox-memory 8192 --virtualbox-disk-size "32000" default', {cwd: cwd}).then(() => {
+				console.log('eval $(docker-machine env default)');
+			}).catch((err) => console.log(color.red(err)));
+		}
 		if (arg.is('tag')) {
 			return get(cwd).then((res) => {
 				const user = cli.get('user') || 'anzerr',

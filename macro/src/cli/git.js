@@ -24,7 +24,7 @@ module.exports = (arg, cwd, cli) => {
 			return fs.readFile(path.join(cwd, 'package.json')).then((json) => {
 				package = true;
 				let a = JSON.parse(json.toString());
-				if (a.scripts && a.scripts.build && a.scripts.build.match(/^tsc/)) {
+				if (a.scripts && a.scripts.build && a.scripts.build.match(/tsc/)) {
 					if (a.scripts.clean) {
 						return util.exec('npm run clean && npm run build', {cwd: cwd});
 					}
