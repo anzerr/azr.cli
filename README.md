@@ -23,10 +23,20 @@ apt-get install -y nodejs
 offical script
 ```shell
 curl -fsSL get.docker.com -o get-docker.sh
+curl -sL https://get.docker.com | sudo -E bash -
 ```
 own version for ubuntu
 ```shell
 curl -sL https://raw.githubusercontent.com/anzerr/deploy/master/docker.sh | sudo -E bash -
+```
+docker-compose
+```shell
+sudo curl -L "https://github.com/docker/compose/releases/download/1.24.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+sudo chmod +x /usr/local/bin/docker-compose
+```
+fast setup
+```shell
+curl -sL https://raw.githubusercontent.com/anzerr/deploy/master/tool.sh | sudo -E bash -
 ```
 
 ### `use git token on npm`
