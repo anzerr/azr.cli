@@ -12,6 +12,7 @@ let cli = new Cli(process.argv, [
 		new Map('host').alias(['h', 'H']).arg(),
 		new Map('port').alias(['p', 'P']).arg(),
 		new Map('dev').alias(['d', 'D']),
+		new Map('proxy'),
 		new Map('version').alias(['v', 'V'])
 	]), cwd = process.cwd();
 

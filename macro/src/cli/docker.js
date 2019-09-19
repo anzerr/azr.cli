@@ -20,8 +20,13 @@ module.exports = (arg, cwd, cli) => {
 			}).catch((err) => console.log(color.red(err)));
 		}
 		if (arg.is('dns')) {
+			if (cli.has('proxy')) {
+				return util.exec('VBoxManage modifyvm "default" --natdnsproxy1 on').then(() => {
+					return util.exec('docker-machine ssh default "cat /etc/resolv.conf"');
+				}).catch((err) => console.log(color.red(err)));
+			}
 			let dns = cli.get('dns') || '8.8.8.8';
-			return util.exec('docker-machine ssh default "echo \\"search home\nnameserver ' + dns + '\\" | sudo tee /etc/resolv.conf > /dev/null"').then(() => {
+			return util.exec(`docker-machine ssh default "echo \\"search home\nnameserver ${dns}\\" | sudo tee /etc/resolv.conf > /dev/null"`).then(() => {
 				return util.exec('docker-machine ssh default "cat /etc/resolv.conf"');
 			}).catch((err) => console.log(color.red(err)));
 		}
@@ -34,7 +39,12 @@ module.exports = (arg, cwd, cli) => {
 			}).catch((err) => console.log(color.red(err)));
 		}
 		if (arg.is('machine')) {
-			return util.exec('docker-machine rm -f default && docker-machine create -d virtualbox --virtualbox-cpu-count "4" --virtualbox-memory 8192 --virtualbox-disk-size "32000" default', {cwd: cwd}).then(() => {
+			return util.exec([
+				'docker-machine rm -f default',
+				'docker-machine create -d virtualbox --virtualbox-cpu-count "4" --virtualbox-memory 8192 --virtualbox-disk-size "32000" default',
+				'VBoxManage modifyvm "default" --natdnsproxy1 on',
+				'docker-machine restart default'
+			].join(' && '), {cwd: cwd}).then(() => {
 				console.log('eval $(docker-machine env default)');
 			}).catch((err) => console.log(color.red(err)));
 		}
