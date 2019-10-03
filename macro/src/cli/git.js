@@ -2,7 +2,8 @@
 const util = require('../util.js'),
 	fs = require('fs.promisify'),
 	color = require('console.color'),
-	path = require('path');
+	path = require('path'),
+	promise = require('promise.util');
 
 const type = {
 	info: '🔧',
@@ -61,6 +62,27 @@ module.exports = (arg, cwd, cli) => {
 				return util.exec('git push origin --tags');
 			});
 		}).catch((err) => console.log(color.red(err)));
+	}
+
+	if (arg.is('sub')) {
+		return fs.readFile('.gitmodules').then((res) => {
+			let modules = res.toString().match(/submodule\s"(.*)"/g).map((r) => {
+				return r.match(/submodule\s"(.*)"/)[1];
+			});
+
+			if (cli.has('filter')) {
+				const filter = cli.get('filter');
+				modules = modules.filter((a) => a.match(filter));
+			}
+
+			const cmd = arg.get();
+			console.log('run on', modules, cmd);
+			return promise.each(modules, (m) => {
+				return util.exec(cmd, {
+					cwd: path.join(cwd, m)
+				}).catch((err) => console.log(color.red(err)));
+			}, cli.get('count'));
+		});
 	}
 
 	if (arg.is('clone')) {

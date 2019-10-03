@@ -18,7 +18,8 @@
 		"slowloris.tool": "git+ssh://git@github.com/anzerr/slowloris.tool.git",
 		"static.http": "git+ssh://git@github.com/anzerr/static.http.git",
 		"sync.folder": "git+ssh://git@github.com/anzerr/sync.folder.git",
-		"unique.util": "git+https://git@github.com/anzerr/uKey.library.git"
+		"unique.util": "git+https://git@github.com/anzerr/unique.util.git",
+		"promise.util": "git+https://git@github.com/anzerr/promise.util.git"
 	},
 	"devDependencies": {
 		"eslint-config-basic": "git+ssh://git@github.com/anzerr/eslintrc.git"

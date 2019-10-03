@@ -22,7 +22,7 @@ module.exports = (arg, cwd, cli) => {
 		if (arg.is('dns')) {
 			if (cli.has('proxy')) {
 				return util.exec('VBoxManage modifyvm "default" --natdnsproxy1 on').then(() => {
-					return util.exec('docker-machine ssh default "cat /etc/resolv.conf"');
+					return util.exec(`docker-machine ssh default "cat /etc/resolv.conf && nslookup ${cli.get('proxy') || 'google.com'}"`);
 				}).catch((err) => console.log(color.red(err)));
 			}
 			let dns = cli.get('dns') || '8.8.8.8';
