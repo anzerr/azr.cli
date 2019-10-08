@@ -19,7 +19,9 @@
 		"static.http": "git+ssh://git@github.com/anzerr/static.http.git",
 		"sync.folder": "git+ssh://git@github.com/anzerr/sync.folder.git",
 		"unique.util": "git+https://git@github.com/anzerr/unique.util.git",
-		"promise.util": "git+https://git@github.com/anzerr/promise.util.git"
+		"promise.util": "git+https://git@github.com/anzerr/promise.util.git",
+		"request.libary": "git+https://git@github.com/anzerr/request.libary.git",
+		"type.util": "git+https://git@github.com/anzerr/type.util.git"
 	},
 	"devDependencies": {
 		"eslint-config-basic": "git+ssh://git@github.com/anzerr/eslintrc.git"

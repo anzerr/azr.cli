@@ -1,6 +1,8 @@
 
 const util = require('../util.js'),
 	fs = require('fs.promisify'),
+	git = require('./npm/git.js'),
+	sortPackage = require('./npm/sort.js'),
 	color = require('console.color'),
 	path = require('path');
 
@@ -132,44 +134,57 @@ module.exports = (arg, cwd, cli) => {
 			}).catch((err) => console.log(color.red(err)));
 		}
 		if (arg.is('update')) {
-			return getPackage(cwd).then(async (res) => {
-				let repo = (await util.exec('git remote get-url origin')).toString().slice(0, -1);
+			return getPackage(cwd).then((res) => {
+				return Promise.all([
+					(res.keywords) ? Promise.resolve({}) : git.getTopic(res.author || 'anzerr', res.name),
+					util.exec('git remote get-url origin'),
+					(res.description) ? Promise.resolve({}) : git.get(res.author || 'anzerr', res.name)
+				]).then((r) => {
+					return {package: res, topic: r[0] || {}, repo: r[1].toString().replace(/(\n|\r)/g, ''), info: r[2] || {}};
+				});
+			}).then(({package, topic, repo, info}) => {
 				repo = {
 					ssl: repo,
 					https: ('https://github.com/' + repo.split(':')[1]).replace(/\.git$/, '')
 				};
 
-				/* if (res.devDependencies && res.devDependencies.eslint) {
-					res.devDependencies.eslint = '5.11.1';
-				}*/
-				res.repository = {
+				if (!package.description || (typeof info.description === 'string' && info.description !== '')) {
+					package.description = info.description || '';
+				}
+				if (!package.keywords || Array.isArray(topic.names)) {
+					package.keywords = topic.names || [];
+				}
+
+				package.repository = {
 					type: 'git',
 					url: repo.ssl
 				};
-				res.engines = {
+				package.engines = {
 					node: '>= 0.10.0'
 				};
-				if (!res.main) {
-					res.main = 'index.js';
+				if (!package.main) {
+					package.main = 'index.js';
 				}
-				if (!res.types) {
-					res.types = (res.main || 'index.js').replace(/\.js$/, '.d.ts');
+				if (!package.types) {
+					package.types = (package.main || 'index.js').replace(/\.js$/, '.d.ts');
 				}
-				if (!res.author) {
-					res.author = 'anzerr';
+				if (!package.author) {
+					package.author = 'anzerr';
 				}
 				if (!cli.has('simple')) {
-					res.license = cli.get('license') || 'MIT';
+					package.license = cli.get('license') || 'MIT';
 				}
-				res.bugs = {
+				package.bugs = {
 					url: repo.https + '/issues'
 				};
-				res.homepage = repo.https + '#readme';
-				console.log(res);
+				package.homepage = repo.https + '#readme';
+				package = sortPackage(package);
+				console.log(package, git.rate);
+				const wait = [fs.writeFile(path.join(cwd, 'package.json'), JSON.stringify(package, null, '\t') + '\n')];
 				if (!cli.has('simple')) {
-					await util.exec(`azr license --type ${res.license}`, {cwd: cwd});
+					wait.push(util.exec(`azr license --type ${package.license}`, {cwd: cwd}));
 				}
-				await fs.writeFile(path.join(cwd, 'package.json'), JSON.stringify(res, null, '\t') + '\n');
+				return Promise.all(wait);
 			}).catch((err) => console.log(color.red(err)));
 		}
 		if (arg.is('push')) {
