@@ -1,16 +1,10 @@
 
-const key = require('./key.js'),
-	fs = require('fs.promisify'),
+const fs = require('fs.promisify'),
 	path = require('path'),
 	promise = require('promise.util'),
-	remove = require('fs.remove'),
-	is = require('type.util');
+	remove = require('fs.remove');
 
 class Version {
-
-	consturctor() {
-
-	}
 
 	package(cwd) {
 		return fs.readFile(path.join(cwd, 'package.json')).then((res) => {
@@ -21,7 +15,7 @@ class Version {
 	isLocked(src) {
 		return fs.access(path.join(src, 'stash.version')).then(() => {
 			return true;
-		}).catch((err) => {
+		}).catch(() => {
 			return false;
 		});
 	}
@@ -79,7 +73,8 @@ class Version {
 
 }
 
+const version = new Version();
+
 module.exports = (src, restore) => {
-	const v = new Version();
-	return restore ? v.restore(src) : v.get(src);
+	return restore ? version.restore(src) : version.get(src);
 };
