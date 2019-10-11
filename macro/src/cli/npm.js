@@ -3,6 +3,7 @@ const util = require('../util.js'),
 	fs = require('fs.promisify'),
 	git = require('./npm/git.js'),
 	sortPackage = require('./npm/sort.js'),
+	versionFile = require('./npm/version.js'),
 	color = require('console.color'),
 	path = require('path');
 
@@ -129,9 +130,15 @@ module.exports = (arg, cwd, cli) => {
 			}).catch((err) => console.log(color.red(err)));
 		}
 		if (arg.is('version')) {
-			return nextVersion(cwd).then((res) => {
-				return fs.writeFile(path.join(cwd, 'package.json'), JSON.stringify(res, null, '\t'));
-			}).catch((err) => console.log(color.red(err)));
+			const v = arg.get();
+			if (v === 'stash' || v === 'pop') {
+				return versionFile(cwd, arg.get() === 'pop').then(() => {
+					console.log('done');
+				}).catch((err) => {
+					console.log('err', err);
+				});
+			}
+			return console.log('use stash or pop for version');
 		}
 		if (arg.is('update')) {
 			return getPackage(cwd).then((res) => {

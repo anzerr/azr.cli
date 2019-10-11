@@ -14,14 +14,15 @@
 		"cli.util": "git+ssh://git@github.com:anzerr/cli.util.git",
 		"console.color": "git+https://github.com/anzerr/console.color.git",
 		"fs.promisify": "git+ssh://git@github.com:anzerr/fs.promisify.git",
+		"fs.remove": "git+https://github.com/anzerr/fs.remove.git",
 		"json.to.yaml": "git+ssh://git@github.com/anzerr/json.to.yaml.git",
+		"promise.util": "git+https://git@github.com/anzerr/promise.util.git",
+		"request.libary": "git+https://git@github.com/anzerr/request.libary.git",
 		"slowloris.tool": "git+ssh://git@github.com/anzerr/slowloris.tool.git",
 		"static.http": "git+ssh://git@github.com/anzerr/static.http.git",
 		"sync.folder": "git+ssh://git@github.com/anzerr/sync.folder.git",
-		"unique.util": "git+https://git@github.com/anzerr/unique.util.git",
-		"promise.util": "git+https://git@github.com/anzerr/promise.util.git",
-		"request.libary": "git+https://git@github.com/anzerr/request.libary.git",
-		"type.util": "git+https://git@github.com/anzerr/type.util.git"
+		"type.util": "git+https://git@github.com/anzerr/type.util.git",
+		"unique.util": "git+https://git@github.com/anzerr/unique.util.git"
 	},
 	"devDependencies": {
 		"eslint-config-basic": "git+ssh://git@github.com/anzerr/eslintrc.git"
