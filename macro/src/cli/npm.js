@@ -143,7 +143,7 @@ module.exports = (arg, cwd, cli) => {
 		if (arg.is('update')) {
 			return getPackage(cwd).then((res) => {
 				return Promise.all([
-					(res.keywords) ? Promise.resolve({}) : git.getTopic(res.author || 'anzerr', res.name),
+					(res.keywords && res.keywords.length !== 0) ? Promise.resolve({}) : git.getTopic(res.author || 'anzerr', res.name),
 					util.exec('git remote get-url origin'),
 					(res.description) ? Promise.resolve({}) : git.get(res.author || 'anzerr', res.name)
 				]).then((r) => {

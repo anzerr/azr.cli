@@ -13,6 +13,7 @@ class Api {
 	handle(res) {
 		const h = res.headers();
 		this.rate = {limit: h['x-ratelimit-limit'], remaining: h['x-ratelimit-remaining']};
+		console.log(res.body().toString(), res.status());
 		return res.parse();
 	}
 
