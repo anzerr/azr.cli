@@ -12,11 +12,14 @@ git config --global url."https://github.com/".insteadOf git@github.com
 Nodejs
 ```shell
 # Using Ubuntu
-curl -sL https://deb.nodesource.com/setup_11.x | sudo -E bash -
+curl -sL https://deb.nodesource.com/setup_13.x | sudo -E bash -
 sudo apt-get install -y nodejs
 
+npm config set prefix ~/npm
+export PATH="$PATH:$HOME/npm/bin"
+
 # Using Debian, as root
-curl -sL https://deb.nodesource.com/setup_11.x | bash -
+curl -sL https://deb.nodesource.com/setup_13.x | bash -
 apt-get install -y nodejs
 ```
 
