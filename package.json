@@ -24,12 +24,7 @@
 		"type.util": "git+https://git@github.com/anzerr/type.util.git",
 		"unique.util": "git+https://git@github.com/anzerr/unique.util.git"
 	},
-	"devDependencies": {
-		"eslint-config-basic": "git+ssh://git@github.com/anzerr/eslintrc.git"
-	},
-	"eslintConfig": {
-		"extends": "eslint-config-basic"
-	},
+	"devDependencies": {},
 	"bin": {
 		"azr": "./macro/index.js"
 	},
